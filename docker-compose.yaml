@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+
+  app:
+    build: .
+    container_name: "scrapy-container"
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: scrapy-mysql
+    # uncomment `platform` line to run on macOS M1
+    #platform: linux/x86_64
+    image: mysql:8.0-debian
+    environment:
+      MYSQL_USER: spider
+      MYSQL_ROOT_PASSWORD: scrapy-books
+      MYSQL_DATABASE: spider-books
+      MYSQL_PASSWORD: scrapy-books
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data: { }
